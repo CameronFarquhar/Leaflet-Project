@@ -22,34 +22,38 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
     // Creating a GeoJSON layer with the retrieved data
     console.log(data.features[0].geometry.coordinates); // location [o]up-down, [1]L-R, and [2]depth
     console.log(data.features[0].properties.mag); // magnitude
-
     var dataFeatures = data.features;
 
     console.log(dataFeatures);
 
-    // L.geoJson(data).addTo(myMap);
     for (var i = 0; i < dataFeatures.length; i++) {
-
-    //     // Conditionals for countries points
-    //     var color = "";
-    //     if (countries[i].points > 200) {
-    //       color = "yellow";
-    //     }
-    //     else if (countries[i].points > 100) {
-    //       color = "blue";
-    //     }
-    //     else if (countries[i].points > 90) {
-    //       color = "green";
-    //     }
-    //     else {
-    //       color = "red";
-    //     }
+        console.log(data.features[i].geometry.coordinates[2])
+    //     // Conditionals for depth color
+        var color = "";
+        if (data.features[i].geometry.coordinates[2] > 90) {
+          color = "red";
+        }
+        else if (data.features[i].geometry.coordinates[2] > 70) {
+          color = "pink";
+        }
+        else if (data.features[i].geometry.coordinates[2] > 50) {
+          color = "peach";
+        }
+            else if (data.features[i].geometry.coordinates[2] > 30) {
+          color = "orange";
+        }
+            else if (data.features[i].geometry.coordinates[2] > 10) {
+          color = "yellow";
+        }
+        else {
+          color = "green";
+        }
       
         // Add circles to map
         L.circle([dataFeatures[i].geometry.coordinates[1], dataFeatures[i].geometry.coordinates[0]], {
           fillOpacity: 0.99,
           color: "white",
-          fillColor: "green",
+          fillColor: color,
           // Adjust radius
           radius: dataFeatures[i].properties.mag * 30000
         }).bindPopup("<h1> Eathquake </h1>").addTo(myMap);
