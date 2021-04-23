@@ -15,8 +15,8 @@ var myMap = L.map("map", {
   }).addTo(myMap);
 
 
-var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=" +
-  "2014-01-02&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
+var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2021-04-21&endtime=" +
+  "2021-04-22&maxlongitude=-17.52148437&minlongitude=-208.83789062&maxlatitude=80.74894534&minlatitude=-60.16517337";
 
   d3.json(queryUrl).then(function(data) {
     // Creating a GeoJSON layer with the retrieved data
@@ -34,13 +34,13 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
           color = "red";
         }
         else if (data.features[i].geometry.coordinates[2] > 70) {
-          color = "pink";
+          color = "orange";
         }
         else if (data.features[i].geometry.coordinates[2] > 50) {
-          color = "peach";
+          color = "rgb(255,218,185)";
         }
             else if (data.features[i].geometry.coordinates[2] > 30) {
-          color = "orange";
+          color = "lightblue";
         }
             else if (data.features[i].geometry.coordinates[2] > 10) {
           color = "yellow";
@@ -51,12 +51,13 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
       
         // Add circles to map
         L.circle([dataFeatures[i].geometry.coordinates[1], dataFeatures[i].geometry.coordinates[0]], {
-          fillOpacity: 0.99,
-          color: "white",
+          fillOpacity: 0.7,
+          colorOpacity: 0.7,
+          color: color,
           fillColor: color,
           // Adjust radius
           radius: dataFeatures[i].properties.mag * 30000
-        }).bindPopup("<h1> Eathquake </h1>").addTo(myMap);
+        }).bindPopup("<h2> Location: " + dataFeatures[i].properties.place + "</h2> <hr> <h3> Magnitude: " + data.features[i].geometry.coordinates[2] + "</h3>").addTo(myMap);
       }
 
   });
