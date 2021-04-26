@@ -1,41 +1,18 @@
-
-  // Adding tile layers
-  var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    id: "light-v10",
-    accessToken: API_KEY
-  });
-  
-  var dark = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    id: "dark-v10",
-    accessToken: API_KEY
-  });
-  
-  var map = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",{
-    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-    maxZoom: 18,
-    id: 'satellite-v9', // style URL
-    accessToken: API_KEY
-});
-
-  var baseMaps = {
-    Light: light,
-    Dark: dark,
-    Sattellite: map
-  };
-
-  // Creating map object
-  var myMap = L.map("map", {
+// Creating map object
+var myMap = L.map("map", {
     center: [40.7128, -74.0059],
-    zoom: 3,
-    layers: light
+    zoom: 3
   });
-
-  L.control.layers(baseMaps).addTo(myMap);
-
+  
+  // Adding tile layer
+  L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+    tileSize: 512,
+    maxZoom: 18,
+    zoomOffset: -1,
+    id: "mapbox/streets-v11",
+    accessToken: API_KEY
+  }).addTo(myMap);
 
 // // within a specified range of dates
 // var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2021-04-21&endtime=" +
@@ -56,21 +33,27 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
     console.log(dataFeatures);
 
     for (var i = 0; i < dataFeatures.length; i++) {
-        console.log(data.features[i].geometry.coordinates[2])
+        // console.log(data.features[i].geometry.coordinates[2])
+       // Conditionals for depth color
         var color = "";
         if (data.features[i].geometry.coordinates[2] > 90) {
+          // color = "red"; 
           color = "rgb(255,0,0)";
         }
         else if (data.features[i].geometry.coordinates[2] > 70) {
+          // color = "orange"; 
           color = "rgb(225,100,0)";
         }
         else if (data.features[i].geometry.coordinates[2] > 50) {
+          // color = "rgb(255,218,185)"; 
           color = "rgb(200,200,0)";
         }
             else if (data.features[i].geometry.coordinates[2] > 30) {
+          // color = "lightblue";
           color = "rgb(255,255,0)";
         }
             else if (data.features[i].geometry.coordinates[2] > 10) {
+          // color = "yellow";
           color = "rgb(150,255,0)";
         }
         else {
