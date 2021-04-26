@@ -31,22 +31,28 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
     //     // Conditionals for depth color
         var color = "";
         if (data.features[i].geometry.coordinates[2] > 90) {
-          color = "red";
+          // color = "red"; 
+          color = "rgb(255,0,0)";
         }
         else if (data.features[i].geometry.coordinates[2] > 70) {
-          color = "orange";
+          // color = "orange"; 
+          color = "rgb(225,100,0)";
         }
         else if (data.features[i].geometry.coordinates[2] > 50) {
-          color = "rgb(255,218,185)";
+          // color = "rgb(255,218,185)"; 
+          color = "rgb(200,200,0)";
         }
             else if (data.features[i].geometry.coordinates[2] > 30) {
-          color = "lightblue";
+          // color = "lightblue";
+          color = "rgb(255,255,0)";
         }
             else if (data.features[i].geometry.coordinates[2] > 10) {
-          color = "yellow";
+          // color = "yellow";
+          color = "rgb(150,255,0)";
         }
         else {
-          color = "green";
+          // color = "green";
+          color = "rgb(0,255,0)";
         }
       
         // Add circles to map
