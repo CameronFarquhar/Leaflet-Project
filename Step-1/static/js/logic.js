@@ -1,22 +1,51 @@
-// Creating map object
-var myMap = L.map("map", {
-    center: [40.7128, -74.0059],
-    zoom: 3
+
+  // Adding tile layers
+  var light = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+    maxZoom: 18,
+    id: "light-v10",
+    accessToken: API_KEY
   });
   
-  // Adding tile layer
-  L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-    tileSize: 512,
+  var dark = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
-    zoomOffset: -1,
-    id: "mapbox/streets-v11",
+    id: "dark-v10",
     accessToken: API_KEY
-  }).addTo(myMap);
+  });
+  
+  var map = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",{
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+    maxZoom: 18,
+    id: 'satellite-v9', // style URL
+    accessToken: API_KEY
+});
+
+  var baseMaps = {
+    Light: light,
+    Dark: dark,
+    Sattellite: map
+  };
+
+  // Creating map object
+  var myMap = L.map("map", {
+    center: [40.7128, -74.0059],
+    zoom: 3,
+    layers: light
+  });
+
+  L.control.layers(baseMaps).addTo(myMap);
 
 
-var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2021-04-21&endtime=" +
-  "2021-04-22&maxlongitude=-17.52148437&minlongitude=-208.83789062&maxlatitude=80.74894534&minlatitude=-60.16517337";
+// // within a specified range of dates
+// var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2021-04-21&endtime=" +
+//   "2021-04-22&maxlongitude=-17.52148437&minlongitude=-208.83789062&maxlatitude=80.74894534&minlatitude=-60.16517337";
+
+// // All eathquakes in the last 30 days
+// var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
+
+// // All quakes within the past 7 days
+var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
   d3.json(queryUrl).then(function(data) {
     // Creating a GeoJSON layer with the retrieved data
@@ -28,26 +57,20 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
 
     for (var i = 0; i < dataFeatures.length; i++) {
         console.log(data.features[i].geometry.coordinates[2])
-       // Conditionals for depth color
         var color = "";
         if (data.features[i].geometry.coordinates[2] > 90) {
-          // color = "red"; 
           color = "rgb(255,0,0)";
         }
         else if (data.features[i].geometry.coordinates[2] > 70) {
-          // color = "orange"; 
           color = "rgb(225,100,0)";
         }
         else if (data.features[i].geometry.coordinates[2] > 50) {
-          // color = "rgb(255,218,185)"; 
           color = "rgb(200,200,0)";
         }
             else if (data.features[i].geometry.coordinates[2] > 30) {
-          // color = "lightblue";
           color = "rgb(255,255,0)";
         }
             else if (data.features[i].geometry.coordinates[2] > 10) {
-          // color = "yellow";
           color = "rgb(150,255,0)";
         }
         else {
@@ -63,7 +86,7 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
           weight: 0.5,
           fillColor: color,
           // Adjust radius
-          radius: dataFeatures[i].properties.mag * 30000
+          radius: dataFeatures[i].properties.mag * 20000
         }).bindPopup("<h2> Location: " + dataFeatures[i].properties.place + "</h2> <hr> <h3> Depth: " + data.features[i].geometry.coordinates[2] + "</h3> <h3> Magnitude: " + dataFeatures[i].properties.mag + "</h3> <h3> Date: " + new Date(dataFeatures[i].properties.time) +  "</h3>").addTo(myMap);
       }
 
