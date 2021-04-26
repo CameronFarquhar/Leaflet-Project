@@ -59,11 +59,12 @@ var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
         L.circle([dataFeatures[i].geometry.coordinates[1], dataFeatures[i].geometry.coordinates[0]], {
           fillOpacity: 0.7,
           colorOpacity: 0.7,
-          color: color,
+          color: "black",
+          weight: 0.5,
           fillColor: color,
           // Adjust radius
           radius: dataFeatures[i].properties.mag * 30000
-        }).bindPopup("<h2> Location: " + dataFeatures[i].properties.place + "</h2> <hr> <h3> Depth: " + data.features[i].geometry.coordinates[2] + "</h3> <h3> Magnitude: " + dataFeatures[i].properties.mag + "</h3>").addTo(myMap);
+        }).bindPopup("<h2> Location: " + dataFeatures[i].properties.place + "</h2> <hr> <h3> Depth: " + data.features[i].geometry.coordinates[2] + "</h3> <h3> Magnitude: " + dataFeatures[i].properties.mag + "</h3> <h3> Date: " + new Date(dataFeatures[i].properties.time) +  "</h3>").addTo(myMap);
       }
 
 var legend = L.control({ position: "bottomright" });
@@ -77,9 +78,6 @@ legend.onAdd = function(map) {
   div.innerHTML += '<i style="background: rgb(200,200,0)"></i><span>50-70</span><br>';
   div.innerHTML += '<i style="background: rgb(225,100,0)"></i><span>70-90</span><br>';
   div.innerHTML += '<i style="background: rgb(255,0,0)"></i><span>90+</span><br>';
-  // div.innerHTML += '<i style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
-  
-  
 
   return div;
 };
