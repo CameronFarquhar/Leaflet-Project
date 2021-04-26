@@ -28,6 +28,7 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
     // Creating a GeoJSON layer with the retrieved data
     console.log(data.features[0].geometry.coordinates); // location [o]up-down, [1]L-R, and [2]depth
     console.log(data.features[0].properties.mag); // magnitude
+    
     var dataFeatures = data.features;
 
     console.log(dataFeatures);
