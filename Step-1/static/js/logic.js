@@ -31,7 +31,7 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
     
     var dataFeatures = data.features;
 
-    console.log(dataFeatures);
+    console.log(data);
 
     for (var i = 0; i < dataFeatures.length; i++) {
         // console.log(data.features[i].geometry.coordinates[2])
